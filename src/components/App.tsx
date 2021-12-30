@@ -9,6 +9,7 @@ import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 import { Header } from './Layout/Header/Header';
 import { MainLayout } from './Layout/MainLayout/MainLayout';
 import { ThemeName } from '../types/setings';
+import { ModalController } from './ModalController/ModalController';
 
 export const ThemeContext = React.createContext({
   theme: 'Default',
@@ -31,6 +32,7 @@ const App: FC = () => {
         <ErrorBoundary>
           <MainLayout />
         </ErrorBoundary>
+        <ModalController />
       </Theme>{' '}
     </ThemeContext.Provider>
   );
