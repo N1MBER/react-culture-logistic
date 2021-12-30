@@ -1,5 +1,12 @@
 import { HeaderLogin, HeaderModule } from '@consta/uikit/Header';
-import React from 'react';
+import { ThemeToggler } from '@consta/uikit/ThemeToggler';
+import { IconSun } from '@consta/uikit/IconSun';
+import { IconMoon } from '@consta/uikit/IconMoon';
+import { IconLightningBolt } from '@consta/uikit/IconLightningBolt';
+import React, { useContext } from 'react';
+import { IconProps } from '@consta/uikit/__internal__/src/icons/Icon/Icon';
+import { ThemeName } from '../../../../types/setings';
+import { ThemeContext } from '../../../App';
 
 type PersonStatus = 'available' | 'remote' | 'out';
 
@@ -12,10 +19,49 @@ type HeaderRightSideProps = {
   isMinified?: boolean;
 };
 
+type ThemeData = {
+  label: string;
+  icon: React.FC<IconProps>;
+};
+
+const getDataOfTheme = (theme: ThemeName): ThemeData => {
+  if (theme === 'Default') {
+    return {
+      label: 'Светлая',
+      icon: IconSun,
+    };
+  }
+  if (theme === 'Dark') {
+    return {
+      label: 'Темная',
+      icon: IconMoon,
+    };
+  }
+  return {
+    label: 'Системная',
+    icon: IconLightningBolt,
+  };
+};
+
+export const themes: ThemeName[] = ['Default', 'Dark', 'System'];
+
 export const HeaderRightSide = (props: HeaderRightSideProps) => {
   const { isLogged, name, info, status, avatar, isMinified } = props;
+
+  const { theme, setTheme } = useContext(ThemeContext);
+
   return (
     <>
+      <HeaderModule indent="s">
+        <ThemeToggler
+          size="s"
+          items={themes}
+          value={theme}
+          onChange={({ value }) => setTheme(value as ThemeName)}
+          getItemIcon={(theme) => getDataOfTheme(theme as ThemeName).icon}
+          getItemLabel={(theme) => getDataOfTheme(theme as ThemeName).label}
+        />
+      </HeaderModule>
       <HeaderModule indent="s">
         <HeaderLogin
           isLogged={isLogged}

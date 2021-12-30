@@ -18,7 +18,7 @@ const cnErrorBoundary = cn('ErrorBoundary');
 // Здесь необходимо использовать классовый компонент, т.к. в реакт нет реализации error boundary с помощью хуков
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
   public state: State = {
-    hasError: true,
+    hasError: false,
   };
 
   static getDerivedStateFromError(): State {
@@ -28,11 +28,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
   render() {
     if (this.state.hasError) {
       return (
-        <div
-          className={cnErrorBoundary({}, [
-            this.props.className,
-          ])}
-        >
+        <div className={cnErrorBoundary({}, [this.props.className])}>
           <Flex alignItems="center" justifyContent="center">
             <Responses500 />
           </Flex>

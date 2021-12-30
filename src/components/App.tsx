@@ -1,14 +1,38 @@
-import React, { FC } from 'react';
-import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
+import React, { FC, useState } from 'react';
+import {
+  Theme,
+  presetGpnDefault,
+  presetGpnDark,
+  presetGpnDisplay,
+} from '@consta/uikit/Theme';
 import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+import { Header } from './Layout/Header/Header';
+import { MainLayout } from './Layout/MainLayout/MainLayout';
+import { ThemeName } from '../types/setings';
+
+export const ThemeContext = React.createContext({
+  theme: 'Default',
+  setTheme: (_theme: 'Default' | 'Dark' | 'System') => {},
+});
 
 const App: FC = () => {
+  const [theme, setTheme] = useState<ThemeName>('Default');
+
+  const getPresetByTheme = () => {
+    if (theme === 'Dark') return presetGpnDark;
+    if (theme === 'Default') return presetGpnDefault;
+    return presetGpnDisplay;
+  };
+
   return (
-    <Theme preset={presetGpnDefault} className="root">
-      <ErrorBoundary>
-        <div />
-      </ErrorBoundary>
-    </Theme>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Theme preset={getPresetByTheme()} className="root">
+        <Header />
+        <ErrorBoundary>
+          <MainLayout />
+        </ErrorBoundary>
+      </Theme>{' '}
+    </ThemeContext.Provider>
   );
 };
 

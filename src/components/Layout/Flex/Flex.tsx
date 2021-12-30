@@ -2,12 +2,8 @@ import React from 'react';
 import { cn } from '../../../__private__/utils/bem';
 import './Flex.scss';
 
-type AlignItems =
-  | 'flex-start'
-  | 'flex-end'
-  | 'center'
-  | 'baseline'
-  | 'stretch';
+type AlignItems = 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+
 type JustifyContent =
   | 'center'
   | 'start'
@@ -46,8 +42,7 @@ export const Flex = (props: FlexProps) => {
       className={cnFlex({ direction }, [className])}
       style={{
         ['--flex-align-items' as string]: alignItems,
-        ['--flex-justify-content' as string]:
-          justifyContent,
+        ['--flex-justify-content' as string]: justifyContent,
         ['--flex-flex-wrap' as string]: flexWrap,
       }}
     >

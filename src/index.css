@@ -8,4 +8,6 @@ body,
 
 .root {
   display: flex;
+
+  background: var(--color-bg-default);
 }
