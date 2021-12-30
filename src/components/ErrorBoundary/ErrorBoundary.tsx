@@ -2,6 +2,7 @@ import React from 'react';
 import { Responses500 } from '@consta/uikit/Responses500';
 import './ErrorBoundary.scss';
 import { cn } from '../../__private__/utils/bem';
+import { Flex } from '../Layout/Flex/Flex';
 
 type ErrorBoundaryProps = {
   className?: string;
@@ -27,8 +28,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className={cnErrorBoundary({}, [this.props.className])}>
-          <Responses500 />
+        <div
+          className={cnErrorBoundary({}, [
+            this.props.className,
+          ])}
+        >
+          <Flex alignItems="center" justifyContent="center">
+            <Responses500 />
+          </Flex>
         </div>
       );
     }
