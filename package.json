@@ -8,11 +8,13 @@
     "build_dev": "cross-env NODE_ENV=production webpack --env SERVER=dev --config webpack.config.prod.js",
     "build_prod": "cross-env NODE_ENV=production webpack --env SERVER=prod --config webpack.config.prod.js",
     "lint": "eslint ./src --fix --color",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "test": "npm-run-all --parallel lint checktypes",
+    "checktypes": "tsc --noEmit --extendedDiagnostics"
   },
   "husky": {
     "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "prepare-commit-msg": "echo 12 & exec < /dev/tty && git cz --hook || true",
       "pre-commit": "lint-staged",
       "pre-push": "yarn checktypes",
       "post-checkout": "node node_modules/@consta/widgets-configs/scripts/checkout-clean.js"
@@ -34,6 +36,9 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "config": {
     "commitizen": {
@@ -113,6 +118,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-todo-plz": "1.1.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",
     "husky": "4.3.8",

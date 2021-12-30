@@ -56,7 +56,7 @@
     "no-restricted-syntax": "off",
     "no-nested-ternary": "off",
     "react/no-array-index-key": "off",
-    "react/destructuring-assignment": "warn",
+    "react/destructuring-assignment": "off",
     "@typescript-eslint/no-use-before-define": "warn",
     "no-param-reassign": ["error", {
       "props": true,
