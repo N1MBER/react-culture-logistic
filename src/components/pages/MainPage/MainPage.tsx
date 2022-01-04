@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { cn } from '../../../__private__/utils/bem';
 import { GoogleMap } from '../../common/GoogleMap/GoogleMap';
 
