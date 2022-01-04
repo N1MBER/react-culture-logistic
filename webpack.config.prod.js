@@ -92,6 +92,9 @@ module.exports = (env) => {
       new Dotenv({
         path: envPath,
       }),
+      new Dotenv({
+        path: './.env.token',
+      }),
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: './public/index.html',

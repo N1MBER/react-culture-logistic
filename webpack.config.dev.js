@@ -90,6 +90,9 @@ module.exports = {
     new Dotenv({
       path: './.env.development',
     }),
+    new Dotenv({
+      path: './.env.token',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({

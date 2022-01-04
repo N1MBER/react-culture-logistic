@@ -1,5 +1,4 @@
 import { Reducer } from 'redux';
-import { modalStack } from '../../__mocks__/data.mock';
 import { ModalData, StoreActionType } from '../../types/setings';
 
 type State = {
@@ -7,7 +6,7 @@ type State = {
 };
 
 const initialState: State = {
-  modalStack,
+  modalStack: [],
 };
 
 export const REMOVE_MODAL_DATA = 'REMOVE_MODAL_DATA';
