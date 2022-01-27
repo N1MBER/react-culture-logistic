@@ -1,3 +1,5 @@
+@import '../../../assets/styles/mixins.scss';
+
 @mixin secondaryButton(){
     border: var(--control-border-width) solid var(--color-control-bg-border-secondary) !important;
 
@@ -34,6 +36,12 @@
     }
 
     &_mode {
+        &_small .gmnoprint[role=menubar]{
+            display: none;
+        }
+    }
+
+    &_mapMode {
         &_roadmap .gmnoprint[role=menubar] {
             & > div:first-child > button {
                 @include primaryButton();
@@ -105,5 +113,55 @@
 
     & .gm-svpc {
         display: none;
+    }
+
+    & .gmnoprint {
+        & > div:first-child {
+            background: none !important;
+            box-shadow: none !important;
+            height: 92px !important;
+            @include flex-space-center();
+            flex-direction: column;
+
+            & > div:nth-child(2) {
+                display: none !important;
+            }
+
+            & .gm-control-active[type=button] {
+                display: flex !important;
+                @include flex-center();
+                background-color: var(--color-bg-default);
+                @include secondaryButton();
+                border-radius: 50%;
+            
+                &::after, &::before {
+                    position: absolute;
+                    width: var(--space-m);
+                    height: calc(var(--space-2xs) * 2 / 3);
+                    content: '';
+                    transition: background-color 0.3s;
+                    background: var(--color-control-typo-secondary) !important;
+                }
+
+                &:hover {
+                    &::after, &::before {
+                        background-color: var(--color-control-typo-secondary-hover) !important;
+                    }
+                }
+
+                &:first-child::before {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+
+    & .gm-control-active[type=button] {
+        display: none;
+        width: var(--space-3xl) !important;
+        height: var(--space-3xl) !important;
+        & > * {
+            display: none !important;
+        }
     }
 }

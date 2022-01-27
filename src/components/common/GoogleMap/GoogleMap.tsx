@@ -23,10 +23,11 @@ const cnGoogleMap = cn('GoogleMap');
 type GoogleMapProps = {
   children?: React.ReactNode | React.ReactNode[];
   token?: string;
+  mode?: 'main' | 'small';
 };
 
 export const GoogleMap = (props: GoogleMapProps) => {
-  const { children, token } = props;
+  const { children, token, mode } = props;
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: token || '',
@@ -52,7 +53,7 @@ export const GoogleMap = (props: GoogleMapProps) => {
   }, []);
 
   return isLoaded ? (
-    <div className={cnGoogleMap({ mode: mapMode })}>
+    <div className={cnGoogleMap({ mapMode, mode })}>
       <GoogleMapWrapper
         mapContainerStyle={containerStyle}
         center={center}
@@ -60,6 +61,7 @@ export const GoogleMap = (props: GoogleMapProps) => {
         onLoad={onLoad}
         onUnmount={onUnmount}
         onMapTypeIdChanged={getMapId}
+        mapTypeId="roadmap"
       >
         {children}
       </GoogleMapWrapper>
