@@ -1,6 +1,6 @@
 import React from 'react';
 import { InfoBox } from '@react-google-maps/api';
-import { Location } from '../../../../types/google';
+import { Location } from '../../../types/google';
 
 type Props = {
   children?: React.ReactNode;

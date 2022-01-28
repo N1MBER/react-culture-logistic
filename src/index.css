@@ -29,4 +29,5 @@ pre {
 img,
 image {
   user-select: none;
+  pointer-events: none;
 }

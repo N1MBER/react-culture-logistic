@@ -3,11 +3,11 @@ import {
   GoogleMap as GoogleMapWrapper,
   useJsApiLoader,
 } from '@react-google-maps/api';
-import { cn } from '../../../__private__/utils/bem';
+import { cn } from '../../__private__/utils/bem';
 
 import './GoogleMap.scss';
-import { GoogleMapType, MapType, Location } from '../../../types/google';
-import { useWindowDimensions } from '../../../hooks/useWindowDimensions/useWindowDimensions';
+import { GoogleMapType, MapType, Location } from '../../types/google';
+import { useWindowDimensions } from '../../hooks/useWindowDimensions/useWindowDimensions';
 
 const defaultCenter: Location = {
   lat: 59.9638699,

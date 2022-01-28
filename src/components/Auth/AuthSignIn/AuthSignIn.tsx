@@ -2,9 +2,9 @@ import { TextField, TextFieldOnChangeArguments } from '@consta/uikit/TextField';
 import { Button } from '@consta/uikit/Button';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { cn } from '../../../../__private__/utils/bem';
+import { cn } from '../../../__private__/utils/bem';
 import { AuthData, AuthProps } from '../types';
-import { setIsAuthorized } from '../../../../store/reducers/authReducer';
+import { setIsAuthorized } from '../../../store/reducers/authReducer';
 
 import './AuthSignIn.scss';
 

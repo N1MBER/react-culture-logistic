@@ -12,7 +12,7 @@ import { MainLayout } from './Layout/MainLayout/MainLayout';
 import { ThemeName } from '../types/setings';
 import { ModalController } from './ModalController/ModalController';
 import { RootState } from '../store/reducers';
-import { Auth } from './common/Auth/Auth';
+import { Auth } from './Auth/Auth';
 import { setShowAuth } from '../store/reducers/authReducer';
 
 export const ThemeContext = React.createContext({

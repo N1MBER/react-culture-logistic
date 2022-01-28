@@ -26,6 +26,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "react/no-unused-prop-types": "off",
     "react/jsx-filename-extension": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "linebreak-style": "off",

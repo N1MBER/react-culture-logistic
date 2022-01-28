@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { IconMMP } from '@consta/uikit/IconMMP';
 import { Text } from '@consta/uikit/Text';
 import { IconClose } from '@consta/uikit/IconClose';
+import { useDispatch } from 'react-redux';
 import { IconCalendar } from '@consta/uikit/IconCalendar';
-import { Place, transformWorkTimeToRus } from '../../../../types/place';
-import { Time, convertTime } from '../../../../types/date';
-import { cn } from '../../../../__private__/utils/bem';
+import {
+  Place,
+  PlaceEvent,
+  transformWorkTimeToRus,
+} from '../../../types/place';
+import { Time } from '../../../types/date';
+import { cn } from '../../../__private__/utils/bem';
+import { setPlaceEvent } from '../../../store/reducers/placeReducer';
 
 import './MapPlaceCard.scss';
+import { MapPlaceCardWorkTime } from './MapPlaceCardWorkTime/MapPlaceCardWorkTime';
 
 type Props = {
   place: Place;
@@ -20,7 +27,10 @@ export const MapPlaceCard = (props: Props) => {
   const [workTime, setWorkTime] = useState<
     undefined | { [key: string]: [Time, Time] }
   >();
+
   const { place, closeCard } = props;
+
+  const dispatch = useDispatch();
 
   const {
     name,
@@ -35,6 +45,10 @@ export const MapPlaceCard = (props: Props) => {
   useEffect(() => {
     workTimeEn && setWorkTime(transformWorkTimeToRus(workTimeEn));
   }, [workTimeEn]);
+
+  const onClickOnPlaceEvent = (placeEvent: PlaceEvent) => {
+    dispatch(setPlaceEvent({ event: placeEvent, place }));
+  };
 
   return (
     <div
@@ -79,57 +93,43 @@ export const MapPlaceCard = (props: Props) => {
         </Text>
       )}
       {Array.isArray(galery) && (
-        <div className={cnMapPlaceCard('Gallery')}>
-          {galery.map((galeryImage, index) => (
-            <div className={cnMapPlaceCard('GalleryContainer')}>
-              <img
-                className={cnMapPlaceCard('GalleryImage')}
-                src={galeryImage}
-                alt={galeryImage}
-                key={`GaleryImage-${name}-${index}`}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-      {workTime && (
-        <div className={cnMapPlaceCard('WorkTime')}>
+        <>
           <Text weight="semibold" size="s" align="left" as="p" view="primary">
-            Время работы:
+            Фотографии:
           </Text>
-          {Object.keys(workTime).map((key, index) => {
-            const startTime = workTime[key][0];
-            const endTime = workTime[key][1];
-            return (
+          <div className={cnMapPlaceCard('Gallery')}>
+            {galery.map((galeryImage, index) => (
               <div
-                className={cnMapPlaceCard('WorkTimeContainer')}
-                key={`WorkTime-${index}`}
+                key={`${cnMapPlaceCard('GalleryImage')}-${name}-${index}`}
+                className={cnMapPlaceCard('GalleryContainer')}
               >
-                <p className={cnMapPlaceCard('WorkTimeDay')}>{key}</p>
-                <p className={cnMapPlaceCard('WorkTimeTime')}>{`${convertTime(
-                  startTime.hours,
-                  startTime.minutes
-                )} - ${convertTime(endTime.hours, endTime.minutes)}`}</p>
+                <img
+                  className={cnMapPlaceCard('GalleryImage')}
+                  src={galeryImage}
+                  alt={galeryImage}
+                />
               </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        </>
       )}
+      {workTime && <MapPlaceCardWorkTime workTime={workTime} />}
       {Array.isArray(events) && (
         <>
           <Text weight="semibold" size="s" align="left" as="p" view="primary">
             Проходящие мероприятия:
           </Text>
           <div className={cnMapPlaceCard('Events')}>
-            {events.map(({ name, image: eventImage }, index) => (
+            {events.map((placeEvent, index) => (
               <button
                 type="button"
+                onClick={() => onClickOnPlaceEvent(placeEvent)}
                 className={cnMapPlaceCard('EventContainer')}
-                key={`MapPlaceCardEvent-${index}`}
+                key={`${cnMapPlaceCard('EventContainer')}-${index}`}
               >
                 <div className={cnMapPlaceCard('EventImage')}>
-                  {eventImage ? (
-                    <img alt={name} src={eventImage} />
+                  {placeEvent.image ? (
+                    <img alt={placeEvent.name} src={placeEvent.image} />
                   ) : (
                     <IconCalendar size="s" />
                   )}
@@ -141,7 +141,7 @@ export const MapPlaceCard = (props: Props) => {
                   as="p"
                   view="primary"
                 >
-                  {name}
+                  {placeEvent.name}
                 </Text>
               </button>
             ))}

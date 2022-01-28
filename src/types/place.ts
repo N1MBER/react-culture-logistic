@@ -3,7 +3,7 @@ import { Location } from './google';
 
 type Galery = string[];
 
-type WorkTime = {
+export type WorkTime = {
   mon: [Time, Time];
   tue: [Time, Time];
   wed: [Time, Time];
@@ -43,4 +43,5 @@ export type PlaceEvent = {
   galery?: Galery;
   description?: string;
   image?: string;
+  price?: number;
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleMapMarker } from '../GoogleMap/GoogleMapMarker/GoogleMapMarker';
 import { GoogleMapInfoBox } from '../GoogleMap/GoogleMapInfoBox/GoogleMapInfoBox';
-import { Place } from '../../../types/place';
+import { Place } from '../../types/place';
 import { MapPlaceCard } from './MapPlaceCard/MapPlaceCard';
 
 type Props = {

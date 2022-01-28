@@ -1,4 +1,4 @@
-@import '../../../assets/styles/mixins.scss';
+@import '../../assets/styles/mixins.scss';
 
 @mixin secondaryButton(){
     border: var(--control-border-width) solid var(--color-control-bg-border-secondary) !important;
@@ -111,8 +111,8 @@
         }
     }
 
-    & .gm-svpc {
-        display: none;
+    & .gm-svpc, & .gm-style-cc {
+        display: none !important;
     }
 
     & .gm-style-mtc {

@@ -7,6 +7,7 @@ import { settingsReducer } from './settingsReducer';
 import { accessReducer } from './tokenStorage/accessStore';
 import { refreshReducer } from './tokenStorage/refreshStore';
 import { authReducer } from './authReducer';
+import { placeReducer } from './placeReducer';
 
 type PersistParam = {
   key: string;
@@ -44,6 +45,7 @@ export const rootReducer = combineReducers({
   ),
   settings: settingsReducer,
   auth: authReducer,
+  place: placeReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Marker } from '@react-google-maps/api';
-import { Location } from '../../../../types/google';
+import { Location } from '../../../types/google';
 
 type Props = {
   position: Location;

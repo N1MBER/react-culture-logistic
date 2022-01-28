@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchPlaceContainer } from '../../common/SearchPlaceContainer/SearchPlaceContainer';
+import { SearchPlaceContainer } from '../../SearchPlaceContainer/SearchPlaceContainer';
 import { cn } from '../../../__private__/utils/bem';
 
 const cnMainPage = cn('MainPage');
