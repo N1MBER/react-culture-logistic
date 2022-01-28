@@ -5,10 +5,13 @@ import { IconClose } from '@consta/uikit/IconClose';
 import { Logo } from '../../graphic/Logo/Logo';
 import { cn } from '../../../__private__/utils/bem';
 import './Auth.scss';
+import { AuthProps } from './types';
+import { AuthSignIn } from './AuthSignIn/AuthSignIn';
+import { AuthSignUp } from './AuthSignUp/AuthSignUp';
 
 const cnAuth = cn('Auth');
 
-const AuthRender = (props: Omit<Props, 'visible'>) => {
+const AuthRender = (props: Omit<AuthProps, 'visible'>) => {
   const { setVisibleModal } = props;
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
@@ -52,16 +55,16 @@ const AuthRender = (props: Omit<Props, 'visible'>) => {
           </Text>
         </button>
       </div>
+      {mode === 'signin' ? (
+        <AuthSignIn setVisibleModal={setVisibleModal} />
+      ) : (
+        <AuthSignUp setVisibleModal={setVisibleModal} />
+      )}
     </div>
   );
 };
 
-type Props = {
-  visible: boolean;
-  setVisibleModal?: (flag: boolean) => void;
-};
-
-export const Auth = (props: Props) => {
+export const Auth = (props: AuthProps) => {
   const { visible, ...otherProps } = props;
   return (
     <Modal isOpen={visible} hasOverlay>

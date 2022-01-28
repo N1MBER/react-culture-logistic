@@ -7,11 +7,7 @@ import { cn } from '../../../__private__/utils/bem';
 
 import './GoogleMap.scss';
 import { GoogleMapType, MapType, Location } from '../../../types/google';
-
-const containerStyle = {
-  width: window.innerWidth,
-  height: window.innerHeight - 60,
-};
+import { useWindowDimensions } from '../../../hooks/useWindowDimensions/useWindowDimensions';
 
 const defaultCenter: Location = {
   lat: 59.9638699,
@@ -37,6 +33,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
   const [map, setMap] = useState<GoogleMapType | null>(null);
   const [mapMode, setMapMode] = useState<MapType>('roadmap');
 
+  const { width, height } = useWindowDimensions();
+
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
@@ -57,7 +55,10 @@ export const GoogleMap = (props: GoogleMapProps) => {
   return isLoaded ? (
     <div className={cnGoogleMap({ mapMode, mode })}>
       <GoogleMapWrapper
-        mapContainerStyle={containerStyle}
+        mapContainerStyle={{
+          width,
+          height: (height || window.innerHeight) - 60,
+        }}
         center={center}
         zoom={zoom}
         onLoad={onLoad}
