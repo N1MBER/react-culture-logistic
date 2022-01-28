@@ -5,8 +5,11 @@ import { IconMoon } from '@consta/uikit/IconMoon';
 import { IconLightningBolt } from '@consta/uikit/IconLightningBolt';
 import React, { useContext } from 'react';
 import { IconProps } from '@consta/uikit/__internal__/src/icons/Icon/Icon';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThemeName } from '../../../../types/setings';
 import { ThemeContext } from '../../../App';
+import { RootState } from '../../../../store/reducers';
+import { setShowAuth } from '../../../../store/reducers/authReducer';
 
 type PersonStatus = 'available' | 'remote' | 'out';
 
@@ -50,6 +53,18 @@ export const HeaderRightSide = (props: HeaderRightSideProps) => {
 
   const { theme, setTheme } = useContext(ThemeContext);
 
+  const isAuthorized = useSelector(
+    (store: RootState) => store.auth.isAuthorized
+  );
+
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (!isAuthorized) {
+      dispatch(setShowAuth(true));
+    }
+  };
+
   return (
     <>
       <HeaderModule indent="s">
@@ -70,6 +85,7 @@ export const HeaderRightSide = (props: HeaderRightSideProps) => {
           personStatus={status || 'available'}
           personAvatarUrl={avatar || 'ссылка на аватарку'}
           isMinified={isMinified}
+          onClick={handleClick}
         />
       </HeaderModule>
     </>

@@ -6,11 +6,17 @@ import { persistReducer } from 'redux-persist';
 import { settingsReducer } from './settingsReducer';
 import { accessReducer } from './tokenStorage/accessStore';
 import { refreshReducer } from './tokenStorage/refreshStore';
+import { authReducer } from './authReducer';
 
 type PersistParam = {
   key: string;
   lifetime?: number;
   whitelist?: string[];
+};
+
+export type StoreActionType<TYPE extends string> = {
+  data?: unknown;
+  type: TYPE;
 };
 
 const getPersistConfig = (params: PersistParam) => ({
@@ -37,6 +43,7 @@ export const rootReducer = combineReducers({
     refreshReducer
   ),
   settings: settingsReducer,
+  auth: authReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

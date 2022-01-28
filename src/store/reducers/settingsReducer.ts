@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
-import { ModalData, StoreActionType } from '../../types/setings';
+import { StoreActionType } from '.';
+import { ModalData } from '../../types/setings';
 
 type State = {
   modalStack: ModalData[];

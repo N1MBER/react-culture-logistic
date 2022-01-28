@@ -7,8 +7,3 @@ export type ModalData = {
   hasOverlay?: boolean;
   childern?: React.ReactNode;
 };
-
-export type StoreActionType<TYPE extends string> = {
-  data?: unknown;
-  type: TYPE;
-};

@@ -5,11 +5,15 @@ import {
   presetGpnDark,
   presetGpnDisplay,
 } from '@consta/uikit/Theme';
+import { useDispatch, useSelector } from 'react-redux';
 import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 import { Header } from './Layout/Header/Header';
 import { MainLayout } from './Layout/MainLayout/MainLayout';
 import { ThemeName } from '../types/setings';
 import { ModalController } from './ModalController/ModalController';
+import { RootState } from '../store/reducers';
+import { Auth } from './common/Auth/Auth';
+import { setShowAuth } from '../store/reducers/authReducer';
 
 export const ThemeContext = React.createContext({
   theme: 'Default',
@@ -25,11 +29,19 @@ const App: FC = () => {
     return presetGpnDisplay;
   };
 
+  const dispatch = useDispatch();
+
+  const showAuth = useSelector((store: RootState) => store.auth.showAuthWindow);
+  const setVisibleModal = (flag: boolean) => {
+    dispatch(setShowAuth(flag));
+  };
+
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <Theme preset={getPresetByTheme()} className="root">
-        <Header />
         <ErrorBoundary>
+          <Header />
+          <Auth visible={showAuth} setVisibleModal={setVisibleModal} />
           <MainLayout />
         </ErrorBoundary>
         <ModalController />
