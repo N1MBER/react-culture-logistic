@@ -115,6 +115,12 @@
         display: none;
     }
 
+    & .gm-style-mtc {
+        & > ul[role=menu] {
+            display: none !important;
+        }
+    }
+
     & .gmnoprint {
         & > div:first-child {
             background: none !important;

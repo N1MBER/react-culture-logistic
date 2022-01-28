@@ -6,16 +6,16 @@ import {
 import { cn } from '../../../__private__/utils/bem';
 
 import './GoogleMap.scss';
-import { GoogleMapType, MapType } from '../../../types/google';
+import { GoogleMapType, MapType, Location } from '../../../types/google';
 
 const containerStyle = {
   width: window.innerWidth,
   height: window.innerHeight - 60,
 };
 
-const center = {
-  lat: -3.745,
-  lng: -38.523,
+const defaultCenter: Location = {
+  lat: 59.9638699,
+  lng: 30.2873573,
 };
 
 const cnGoogleMap = cn('GoogleMap');
@@ -24,10 +24,12 @@ type GoogleMapProps = {
   children?: React.ReactNode | React.ReactNode[];
   token?: string;
   mode?: 'main' | 'small';
+  center?: Location;
+  zoom?: number;
 };
 
 export const GoogleMap = (props: GoogleMapProps) => {
-  const { children, token, mode } = props;
+  const { children, token, mode, center = defaultCenter, zoom = 10 } = props;
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: token || '',
@@ -36,7 +38,7 @@ export const GoogleMap = (props: GoogleMapProps) => {
   const [mapMode, setMapMode] = useState<MapType>('roadmap');
 
   const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds();
+    const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map);
   }, []);
@@ -57,7 +59,7 @@ export const GoogleMap = (props: GoogleMapProps) => {
       <GoogleMapWrapper
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
+        zoom={zoom}
         onLoad={onLoad}
         onUnmount={onUnmount}
         onMapTypeIdChanged={getMapId}
