@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap } from '../GoogleMap/GoogleMap';
 import { pins } from '../../../__mocks__/google.mock';
 import { Place } from '../../../types/place';
 import { MapPlace } from '../MapPlace/MapPlace';
 
 export const SearchPlaceContainer = () => {
-  const [places, setPlaces] = useState<Place[]>([...pins]);
+  const [places, setPlaces] = useState<Place[]>([]);
+
+  useEffect(() => {
+    setPlaces([...pins]);
+  }, []);
 
   return (
     <GoogleMap token={process.env.REACT_APP_GOOGLE_API_KEY}>

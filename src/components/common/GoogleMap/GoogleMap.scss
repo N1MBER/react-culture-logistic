@@ -162,6 +162,15 @@
         }
     }
 
+    & .infoBox {
+        width: auto !important;
+        overflow: visible !important;
+
+        & > img {
+            display: none;
+        }
+    }
+
     & .gm-control-active[type=button] {
         display: none;
         width: var(--space-3xl) !important;
