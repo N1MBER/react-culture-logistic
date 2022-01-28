@@ -7,7 +7,7 @@ type State = {
 };
 
 const initialState: State = {
-  showAuthWindow: true,
+  showAuthWindow: false,
   isAuthorized: false,
 };
 
