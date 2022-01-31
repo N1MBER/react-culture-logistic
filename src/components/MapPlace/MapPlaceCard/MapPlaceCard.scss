@@ -54,7 +54,7 @@
             & .MapPlaceCard-Title {
                 grid-row-start: 1;
                 grid-row-end: 4;
-                flex-direction: column;
+                flex-direction: column-reverse;
                 @include flex-start();
                 height: 100%;
 

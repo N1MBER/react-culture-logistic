@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
 import { Place } from '../../types/place';
 import { cn } from '../../__private__/utils/bem';
@@ -13,6 +13,7 @@ import {
 } from './PlaceBarSearchField/PlaceBarSearchField';
 import { pins } from '../../__mocks__/google.mock';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions/useWindowDimensions';
+import { setCurrentPlace } from '../../store/reducers/placeReducer';
 
 import './PlaceBar.scss';
 
@@ -41,6 +42,8 @@ export const PlaceBar = (props: Props) => {
 
   const { width, height } = useWindowDimensions();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (typeof currentPlace !== 'undefined') {
       setPlaces(currentPlace);
@@ -63,7 +66,7 @@ export const PlaceBar = (props: Props) => {
 
   const handleCardClick = (place: Place) => {
     setViewMode('currentPlace');
-    setPlaces(place);
+    dispatch(setCurrentPlace(place));
   };
 
   useEffect(() => {
@@ -74,11 +77,16 @@ export const PlaceBar = (props: Props) => {
     onChangePlaces?.(Array.isArray(places) ? places : [places]);
   }, [places]);
 
+  const handleCloseCard = () => {
+    setViewMode('search');
+    dispatch(setCurrentPlace(undefined));
+  };
+
   const cardProps: Omit<MapPlaceCardProps, 'place'> =
     viewMode === 'currentPlace'
       ? {
           view: 'card',
-          closeCard: () => setViewMode('search'),
+          closeCard: handleCloseCard,
         }
       : {
           view: 'card_short',

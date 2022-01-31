@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   GoogleMap as GoogleMapWrapper,
   useJsApiLoader,
@@ -35,14 +35,36 @@ export const GoogleMap = (props: GoogleMapProps) => {
   const [map, setMap] = useState<GoogleMapType | null>(null);
   const [mapMode, setMapMode] = useState<MapType>('roadmap');
 
+  const [currentCenter, setCurrentCenter] = useState<Location>(center);
+  const [currentZoom, setCurrentZoom] = useState<number>(zoom);
+
   const { width, height } = useWindowDimensions();
 
   const viewMode = useSelector((store: RootState) => store.settings.viewMode);
 
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map);
+  const currentPlace = useSelector(
+    (store: RootState) => store.place.currentPlace
+  );
+
+  useEffect(() => {
+    if (currentPlace && viewMode === 'sidebar') {
+      setCurrentCenter({
+        ...currentPlace.coordinate,
+      });
+      setCurrentZoom(17);
+    }
+  }, [currentPlace]);
+
+  useEffect(() => {
+    setCurrentCenter(center);
+  }, [center]);
+
+  useEffect(() => {
+    setCurrentZoom(zoom);
+  }, [zoom]);
+
+  const onLoad = useCallback(function callback(newMap) {
+    setMap(newMap);
   }, []);
 
   const getMapId = () => {
@@ -64,8 +86,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
             viewMode === 'sidebar' ? (width || window.innerWidth) / 2 : width,
           height: (height || window.innerHeight) - 60,
         }}
-        center={center}
-        zoom={zoom}
+        center={currentCenter}
+        zoom={currentZoom}
         onLoad={onLoad}
         onUnmount={onUnmount}
         onMapTypeIdChanged={getMapId}

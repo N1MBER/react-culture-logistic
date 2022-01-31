@@ -2,7 +2,7 @@
 
 .MapPlaceCardWorkTime {
     font-size: 11px;
-    
+
     & > *:not(:last-child) {
         margin-bottom: var(--space-2xs);  
     }
@@ -14,5 +14,9 @@
 
     &-Day {
         font-weight: 600;
+    }
+
+    &-Day, &-Time {
+        color: var(--color-typo-primary);
     }
 }
