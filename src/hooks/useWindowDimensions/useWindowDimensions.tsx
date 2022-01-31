@@ -6,7 +6,10 @@ type Size = {
 };
 
 export const useWindowDimensions = () => {
-  const [size, setSize] = useState<Size>({});
+  const [size, setSize] = useState<Size>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   useEffect(() => {
     window.addEventListener('resize', () => {

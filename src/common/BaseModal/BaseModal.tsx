@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from '@consta/uikit/Modal';
 import { Text } from '@consta/uikit/Text';
 import { IconClose } from '@consta/uikit/IconClose';
-import { cn } from '../../../__private__/utils/bem';
+import { cn } from '../../__private__/utils/bem';
 import './BaseModal.scss';
 
 type BaseModalProps = {

@@ -1,0 +1,25 @@
+@import '../../assets/styles/mixins.scss';
+
+.PlaceBar { 
+    width: var(--place-bar-width);
+    position: relative;
+    @include flex-start();
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: var(--space-l);
+    transition: margin 0.5s;
+    margin-left: var(--place-bar-margin);
+    border-right: 2px solid var(--color-bg-brand);
+
+    & > div:first-child {
+        margin-bottom: var(--space-m);  
+    }
+
+    & > *:not(:last-child) {
+        margin-bottom: var(--space-s);  
+    }
+
+    &_open {
+        margin-left: 0;
+    }
+}

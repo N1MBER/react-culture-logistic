@@ -5,20 +5,55 @@
     position: relative;
     @include flex-center();
     flex-direction: column;
-    border-radius: var(--control-radius);
-    min-width: 240px;
-    max-width: 240px;
+    min-width: 100%;
     max-height: var(--infobox-max-height);
     padding: var(--space-l);
-    box-shadow: var(--shadow-modal);
 
-    & > * {
-        &:not(:first-child) {
-            width: 100%;
+
+    &_view {
+        &_infobox {
+            box-shadow: var(--shadow-modal);
+            border-radius: var(--control-radius);
+            min-width: 240px;
+            max-width: 240px;
+
+            & > * {
+                &:not(:first-child) {
+                    width: 100%;
+                }
+        
+                &:not(:last-child) {
+                    margin-bottom: var(--space-xs);  
+                }
+            }
         }
 
-        &:not(:last-child) {
-            margin-bottom: var(--space-xs);  
+        &_card_short {
+            @include clear();
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 50% 50%;
+
+            & .MapPlaceCard-Title {
+                grid-row-start: 1;
+                grid-row-end: 4;
+                flex-direction: column;
+                @include flex-start();
+                height: 100%;
+
+                & .MapPlaceCard-TitleContainer {
+                    width: 160px;
+                    height: 160px;
+                    border-radius: var(--space-m);
+                }
+            }
+
+            & .MapPlaceCard-GalleryText,
+            & .MapPlaceCard-Gallery,
+            & .MapPlaceCard-EventsText,
+            & .MapPlaceCard-Events {
+                display: none;
+            }
         }
     }
 

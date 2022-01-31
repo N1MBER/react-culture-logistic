@@ -16,19 +16,21 @@ import { setPlaceEvent } from '../../../store/reducers/placeReducer';
 import './MapPlaceCard.scss';
 import { MapPlaceCardWorkTime } from './MapPlaceCardWorkTime/MapPlaceCardWorkTime';
 
-type Props = {
+export type MapPlaceCardProps = {
   place: Place;
-  closeCard: () => void;
+  closeCard?: () => void;
+  view?: 'infobox' | 'card' | 'card_short';
+  onCardClick?: (place: Place) => void;
 };
 
 const cnMapPlaceCard = cn('MapPlaceCard');
 
-export const MapPlaceCard = (props: Props) => {
+export const MapPlaceCard = (props: MapPlaceCardProps) => {
   const [workTime, setWorkTime] = useState<
     undefined | { [key: string]: [Time, Time] }
   >();
 
-  const { place, closeCard } = props;
+  const { place, closeCard, view = 'infobox', onCardClick } = props;
 
   const dispatch = useDispatch();
 
@@ -50,20 +52,25 @@ export const MapPlaceCard = (props: Props) => {
     dispatch(setPlaceEvent({ event: placeEvent, place }));
   };
 
+  const Container = view === 'card_short' ? 'button' : 'div';
+
   return (
-    <div
-      className={cnMapPlaceCard()}
+    <Container
+      className={cnMapPlaceCard({ view })}
+      onClick={() => onCardClick?.(place)}
       style={{
         ['--infobox-max-height' as string]: window.innerHeight * 0.65,
       }}
     >
-      <button
-        className={cnMapPlaceCard('CloseButton')}
-        type="button"
-        onClick={closeCard}
-      >
-        <IconClose size="s" />
-      </button>
+      {view !== 'card_short' && (
+        <button
+          className={cnMapPlaceCard('CloseButton')}
+          type="button"
+          onClick={closeCard}
+        >
+          <IconClose size="s" />
+        </button>
+      )}
       <div className={cnMapPlaceCard('Title')}>
         <div
           className={cnMapPlaceCard('TitleContainer', { hasImage: !!image })}
@@ -78,23 +85,50 @@ export const MapPlaceCard = (props: Props) => {
             <IconMMP size="m" view="secondary" />
           )}
         </div>
-        <Text size="xl" as="h3" weight="semibold" view="primary">
+        <Text
+          className={cnMapPlaceCard('TitleText')}
+          size="xl"
+          as="h3"
+          weight="semibold"
+          view="primary"
+        >
           {name}
         </Text>
       </div>
       {description && (
-        <Text weight="regular" size="s" align="left" as="p" view="primary">
+        <Text
+          className={cnMapPlaceCard('Description')}
+          weight="regular"
+          size="s"
+          align="left"
+          as="p"
+          view="primary"
+        >
           {description}
         </Text>
       )}
       {address && (
-        <Text as="span" weight="regular" size="xs" view="secondary">
+        <Text
+          className={cnMapPlaceCard('Address')}
+          as="span"
+          weight="regular"
+          size="xs"
+          align="left"
+          view="secondary"
+        >
           {address}
         </Text>
       )}
       {Array.isArray(galery) && (
         <>
-          <Text weight="semibold" size="s" align="left" as="p" view="primary">
+          <Text
+            className={cnMapPlaceCard('GalleryText')}
+            weight="semibold"
+            size="s"
+            align="left"
+            as="p"
+            view="primary"
+          >
             Фотографии:
           </Text>
           <div className={cnMapPlaceCard('Gallery')}>
@@ -116,7 +150,14 @@ export const MapPlaceCard = (props: Props) => {
       {workTime && <MapPlaceCardWorkTime workTime={workTime} />}
       {Array.isArray(events) && (
         <>
-          <Text weight="semibold" size="s" align="left" as="p" view="primary">
+          <Text
+            className={cnMapPlaceCard('EventsText')}
+            weight="semibold"
+            size="s"
+            align="left"
+            as="p"
+            view="primary"
+          >
             Проходящие мероприятия:
           </Text>
           <div className={cnMapPlaceCard('Events')}>
@@ -148,6 +189,6 @@ export const MapPlaceCard = (props: Props) => {
           </div>
         </>
       )}
-    </div>
+    </Container>
   );
 };

@@ -3,11 +3,13 @@ import {
   GoogleMap as GoogleMapWrapper,
   useJsApiLoader,
 } from '@react-google-maps/api';
+import { useSelector } from 'react-redux';
 import { cn } from '../../__private__/utils/bem';
 
 import './GoogleMap.scss';
 import { GoogleMapType, MapType, Location } from '../../types/google';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions/useWindowDimensions';
+import { RootState } from '../../store/reducers';
 
 const defaultCenter: Location = {
   lat: 59.9638699,
@@ -35,6 +37,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
 
   const { width, height } = useWindowDimensions();
 
+  const viewMode = useSelector((store: RootState) => store.settings.viewMode);
+
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
@@ -56,7 +60,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
     <div className={cnGoogleMap({ mapMode, mode })}>
       <GoogleMapWrapper
         mapContainerStyle={{
-          width,
+          width:
+            viewMode === 'sidebar' ? (width || window.innerWidth) / 2 : width,
           height: (height || window.innerHeight) - 60,
         }}
         center={center}

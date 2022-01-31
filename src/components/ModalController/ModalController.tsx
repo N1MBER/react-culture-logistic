@@ -4,7 +4,7 @@ import { IconClose } from '@consta/uikit/IconClose';
 import { useFlag } from '@consta/uikit/useFlag';
 import { Tooltip } from '@consta/uikit/Tooltip';
 import { RootState } from '../../store/reducers';
-import { BaseModal } from '../common/BaseModal/BaseModal';
+import { BaseModal } from '../../common/BaseModal/BaseModal';
 import { cn } from '../../__private__/utils/bem';
 import {
   clearModalStack,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '@consta/uikit/Modal';
 import { Text } from '@consta/uikit/Text';
 import { IconClose } from '@consta/uikit/IconClose';
-import { Logo } from '../graphic/Logo/Logo';
+import { Logo } from '../../graphic/Logo/Logo';
 import { cn } from '../../__private__/utils/bem';
 import './Auth.scss';
 import { AuthProps } from './types';
