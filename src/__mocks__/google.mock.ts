@@ -120,10 +120,6 @@ export const pins: Place[] = [
       lng: 30.3145597,
     },
     workTime: {
-      mon: [
-        { hours: 10, minutes: 30 },
-        { hours: 18, minutes: 0 },
-      ],
       tue: [
         { hours: 10, minutes: 30 },
         { hours: 21, minutes: 0 },
@@ -170,10 +166,6 @@ export const pins: Place[] = [
     },
     workTime: {
       mon: [
-        { hours: 10, minutes: 0 },
-        { hours: 18, minutes: 0 },
-      ],
-      tue: [
         { hours: 10, minutes: 0 },
         { hours: 18, minutes: 0 },
       ],

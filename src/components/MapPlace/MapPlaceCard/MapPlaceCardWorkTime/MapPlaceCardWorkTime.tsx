@@ -8,7 +8,7 @@ import './MapPlaceCardWorkTime.scss';
 const cnMapPlaceCardWorkTime = cn('MapPlaceCardWorkTime');
 
 export const MapPlaceCardWorkTime = (props: {
-  workTime: { [key: string]: [Time, Time] };
+  workTime: { [key: string]: [Time, Time] | undefined };
 }) => {
   const { workTime } = props;
   return (
@@ -17,18 +17,30 @@ export const MapPlaceCardWorkTime = (props: {
         Время работы:
       </Text>
       {Object.keys(workTime).map((key) => {
-        const startTime = workTime[key][0];
-        const endTime = workTime[key][1];
+        let startTime;
+        let endTime;
+        const time = workTime[key];
+        if (time) {
+          [startTime, endTime] = time;
+        }
         return (
           <div
             className={cnMapPlaceCardWorkTime('Container')}
             key={`${cnMapPlaceCardWorkTime('Day')}-${key}`}
           >
             <p className={cnMapPlaceCardWorkTime('Day')}>{key}</p>
-            <p className={cnMapPlaceCardWorkTime('Time')}>{`${convertTime(
-              startTime.hours,
-              startTime.minutes
-            )} - ${convertTime(endTime.hours, endTime.minutes)}`}</p>
+            <p
+              className={cnMapPlaceCardWorkTime('Time', {
+                alert: !(startTime && endTime),
+              })}
+            >
+              {startTime && endTime
+                ? `${convertTime(
+                    startTime.hours,
+                    startTime.minutes
+                  )} - ${convertTime(endTime.hours, endTime.minutes)}`
+                : 'Закрыто'}
+            </p>
           </div>
         );
       })}

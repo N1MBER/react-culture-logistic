@@ -23,7 +23,7 @@ export const MapPlaceEvents = (props: Props) => {
   const { event, place: eventPlace } = props;
 
   const [workTime, setWorkTime] = useState<
-    undefined | { [key: string]: [Time, Time] }
+    undefined | { [key: string]: [Time, Time] | undefined }
   >();
 
   const { name, startTime, endTime, galery, description, image } = event;

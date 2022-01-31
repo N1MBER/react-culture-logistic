@@ -14,9 +14,16 @@
 
     &-Day {
         font-weight: 600;
+        margin-bottom: var(--space-3xs);
     }
 
     &-Day, &-Time {
         color: var(--color-typo-primary);
+    }
+
+    &-Time_alert {
+        font-weight: 700;
+        font-size: 12px;
+        color: var(--color-typo-alert);
     }
 }

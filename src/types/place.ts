@@ -4,13 +4,13 @@ import { Location } from './google';
 type Galery = string[];
 
 export type WorkTime = {
-  mon: [Time, Time];
-  tue: [Time, Time];
-  wed: [Time, Time];
-  thu: [Time, Time];
-  fri: [Time, Time];
-  sat: [Time, Time];
-  sun: [Time, Time];
+  mon?: [Time, Time];
+  tue?: [Time, Time];
+  wed?: [Time, Time];
+  thu?: [Time, Time];
+  fri?: [Time, Time];
+  sat?: [Time, Time];
+  sun?: [Time, Time];
 };
 
 export const transformWorkTimeToRus = (work: WorkTime) => {
