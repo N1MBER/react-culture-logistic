@@ -120,6 +120,10 @@
         }
     }
 
+    & .gmnoprint.gm-bundled-control {
+        bottom: 180px !important;
+    }
+
     & .gmnoprint {
         & > div:first-child {
             background: none !important;
