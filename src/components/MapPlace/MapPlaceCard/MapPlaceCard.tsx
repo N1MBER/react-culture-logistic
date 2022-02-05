@@ -27,7 +27,7 @@ const cnMapPlaceCard = cn('MapPlaceCard');
 
 export const MapPlaceCard = (props: MapPlaceCardProps) => {
   const [workTime, setWorkTime] = useState<
-    undefined | { [key: string]: [Time, Time] | undefined }
+    undefined | Record<string, [Time, Time] | undefined>
   >();
 
   const { place, closeCard, view = 'infobox', onCardClick } = props;

@@ -8,7 +8,7 @@ import './MapPlaceCardWorkTime.scss';
 const cnMapPlaceCardWorkTime = cn('MapPlaceCardWorkTime');
 
 export const MapPlaceCardWorkTime = (props: {
-  workTime: { [key: string]: [Time, Time] | undefined };
+  workTime: Record<string, [Time, Time] | undefined>;
 }) => {
   const { workTime } = props;
   return (
