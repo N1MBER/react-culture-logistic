@@ -31,7 +31,7 @@ type Props = {
 const cnPlaceBar = cn('PlaceBar');
 
 export const PlaceBar = (props: Props) => {
-  const { onChangePlaces, open, load, places: placesProp, onSearch } = props;
+  const { open, load, places: placesProp, onSearch } = props;
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -79,10 +79,6 @@ export const PlaceBar = (props: Props) => {
     setViewMode('currentPlace');
     dispatch(setCurrentPlace(place));
   };
-
-  useEffect(() => {
-    onChangePlaces?.(Array.isArray(places) ? places : [places]);
-  }, [places]);
 
   const handleCloseCard = () => {
     setViewMode('search');

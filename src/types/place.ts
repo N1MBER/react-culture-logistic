@@ -32,7 +32,7 @@ export type Place = {
   address?: string;
   image: Image;
   work_time?: WorkTime;
-  galery?: Galery;
+  gallery?: Galery;
   events?: PlaceEvent[];
 } & Location;
 
@@ -40,7 +40,7 @@ export type PlaceEvent = {
   name: string;
   start_time?: string;
   end_time?: string;
-  galery?: Galery;
+  gallery?: Galery;
   description?: string;
   image?: Image;
   price?: number;

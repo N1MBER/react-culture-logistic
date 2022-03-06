@@ -17,6 +17,7 @@ import { setPlaceEvent } from '../../../store/reducers/placeReducer';
 
 import './MapPlaceCard.scss';
 import { MapPlaceCardWorkTime } from './MapPlaceCardWorkTime/MapPlaceCardWorkTime';
+import { MapPlaceImage } from '../MapPlaceImage/MapPlaceImage';
 
 export type MapPlaceCardProps = {
   place: Place;
@@ -79,6 +80,7 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
   const [workTime, setWorkTime] = useState<
     undefined | Record<string, Time | undefined>
   >();
+  const [image, setImage] = useState<string | undefined>();
 
   const { place, closeCard, view = 'infobox', onCardClick } = props;
 
@@ -89,10 +91,10 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
 
   const {
     name,
-    image,
+    image: placeImage,
     work_time: workTimeEn,
     description,
-    galery,
+    gallery,
     address,
     events,
   } = place;
@@ -114,147 +116,159 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
   };
 
   const Container = view === 'card_short' ? 'button' : 'div';
-
+  console.log(gallery);
   return (
-    <Container
-      className={cnMapPlaceCard({ view })}
-      onClick={handleCardClick}
-      style={{
-        ['--infobox-max-height' as string]: window.innerHeight * 0.65,
-      }}
-    >
-      {view !== 'card_short' && (
-        <button
-          className={cnMapPlaceCard('CloseButton')}
-          type="button"
-          onClick={closeCard}
-        >
-          <IconClose size="s" />
-        </button>
-      )}
-      <div className={cnMapPlaceCard('Title')}>
-        <div
-          className={cnMapPlaceCard('TitleContainer', { hasImage: !!image })}
-        >
-          {image.image ? (
-            <img
-              className={cnMapPlaceCard('TitleImage')}
-              src={image.image}
-              alt={name}
-            />
-          ) : (
-            <IconMMP size="m" view="secondary" />
-          )}
-        </div>
-        <Text
-          className={cnMapPlaceCard('TitleText')}
-          size="xl"
-          as="h3"
-          weight="semibold"
-          view="primary"
-        >
-          {name}
-        </Text>
-      </div>
-      {description && (
-        <Text
-          className={cnMapPlaceCard('Description')}
-          weight="regular"
-          size="s"
-          align="left"
-          as="p"
-          view="primary"
-        >
-          {description}
-        </Text>
-      )}
-      {address && (
-        <Text
-          className={cnMapPlaceCard('Address')}
-          as="span"
-          weight="regular"
-          size="xs"
-          align="left"
-          view="secondary"
-        >
-          {address}
-        </Text>
-      )}
-      {Array.isArray(galery) && (
-        <>
+    <>
+      <Container
+        className={cnMapPlaceCard({ view })}
+        onClick={handleCardClick}
+        style={{
+          ['--infobox-max-height' as string]: window.innerHeight * 0.65,
+        }}
+      >
+        {view !== 'card_short' && (
+          <button
+            className={cnMapPlaceCard('CloseButton')}
+            type="button"
+            onClick={closeCard}
+          >
+            <IconClose size="s" />
+          </button>
+        )}
+        <div className={cnMapPlaceCard('Title')}>
+          <div
+            className={cnMapPlaceCard('TitleContainer', {
+              hasImage: !!placeImage,
+            })}
+          >
+            {placeImage.image ? (
+              <img
+                className={cnMapPlaceCard('TitleImage')}
+                src={placeImage.image}
+                alt={name}
+              />
+            ) : (
+              <IconMMP size="m" view="secondary" />
+            )}
+          </div>
           <Text
-            className={cnMapPlaceCard('GalleryText')}
+            className={cnMapPlaceCard('TitleText')}
+            size="xl"
+            as="h3"
             weight="semibold"
+            view="primary"
+          >
+            {name}
+          </Text>
+        </div>
+        {description && (
+          <Text
+            className={cnMapPlaceCard('Description')}
+            weight="regular"
             size="s"
             align="left"
             as="p"
             view="primary"
           >
-            Фотографии:
+            {description}
           </Text>
-          <div className={cnMapPlaceCard('Gallery')}>
-            {galery.map((galeryImage, index) => (
-              <div
-                key={`${cnMapPlaceCard('GalleryImage')}-${name}-${index}`}
-                className={cnMapPlaceCard('GalleryContainer')}
-              >
-                <img
-                  className={cnMapPlaceCard('GalleryImage')}
-                  src={galeryImage.image}
-                  alt={galeryImage.image}
-                />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-      {workTime && (
-        <MapPlaceCardWorkTime
-          isOpen={checkOpen(workTimeEn)}
-          work_time={workTime}
+        )}
+        {address && (
+          <Text
+            className={cnMapPlaceCard('Address')}
+            as="span"
+            weight="regular"
+            size="xs"
+            align="left"
+            view="secondary"
+          >
+            {address}
+          </Text>
+        )}
+        {Array.isArray(gallery) && (
+          <>
+            <Text
+              className={cnMapPlaceCard('GalleryText')}
+              weight="semibold"
+              size="s"
+              align="left"
+              as="p"
+              view="primary"
+            >
+              Фотографии:
+            </Text>
+            <div className={cnMapPlaceCard('Gallery')}>
+              {gallery.map((galeryImage, index) => (
+                <div
+                  onClick={() => setImage(galeryImage.image)}
+                  key={`${cnMapPlaceCard('GalleryImage')}-${name}-${index}`}
+                  className={cnMapPlaceCard('GalleryContainer')}
+                >
+                  <img
+                    className={cnMapPlaceCard('GalleryImage')}
+                    src={galeryImage.image}
+                    alt={galeryImage.image}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {workTime && (
+          <MapPlaceCardWorkTime
+            isOpen={checkOpen(workTimeEn)}
+            work_time={workTime}
+          />
+        )}
+        {Array.isArray(events) && events.length > 0 && (
+          <>
+            <Text
+              className={cnMapPlaceCard('EventsText')}
+              weight="semibold"
+              size="s"
+              align="left"
+              as="p"
+              view="primary"
+            >
+              Проходящие мероприятия:
+            </Text>
+            <div className={cnMapPlaceCard('Events')}>
+              {events.map((placeEvent, index) => (
+                <button
+                  type="button"
+                  onClick={() => onClickOnPlaceEvent(placeEvent)}
+                  className={cnMapPlaceCard('EventContainer')}
+                  key={`${cnMapPlaceCard('EventContainer')}-${index}`}
+                >
+                  <div className={cnMapPlaceCard('EventImage')}>
+                    {placeEvent.image ? (
+                      <img alt={placeEvent.name} src={placeEvent.image.image} />
+                    ) : (
+                      <IconCalendar size="s" />
+                    )}
+                  </div>
+                  <Text
+                    align="left"
+                    weight="semibold"
+                    size="m"
+                    as="p"
+                    view="primary"
+                  >
+                    {placeEvent.name}
+                  </Text>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </Container>
+      {image && (
+        <MapPlaceImage
+          isOpen={!!image}
+          image={image}
+          changeVisible={(flag) => !flag && setImage(undefined)}
         />
       )}
-      {Array.isArray(events) && (
-        <>
-          <Text
-            className={cnMapPlaceCard('EventsText')}
-            weight="semibold"
-            size="s"
-            align="left"
-            as="p"
-            view="primary"
-          >
-            Проходящие мероприятия:
-          </Text>
-          <div className={cnMapPlaceCard('Events')}>
-            {events.map((placeEvent, index) => (
-              <button
-                type="button"
-                onClick={() => onClickOnPlaceEvent(placeEvent)}
-                className={cnMapPlaceCard('EventContainer')}
-                key={`${cnMapPlaceCard('EventContainer')}-${index}`}
-              >
-                <div className={cnMapPlaceCard('EventImage')}>
-                  {placeEvent.image ? (
-                    <img alt={placeEvent.name} src={placeEvent.image.image} />
-                  ) : (
-                    <IconCalendar size="s" />
-                  )}
-                </div>
-                <Text
-                  align="left"
-                  weight="semibold"
-                  size="m"
-                  as="p"
-                  view="primary"
-                >
-                  {placeEvent.name}
-                </Text>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </Container>
+    </>
   );
 };

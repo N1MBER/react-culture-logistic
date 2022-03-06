@@ -26,9 +26,7 @@ export const PlaceBarSearchField = (props: Props) => {
   };
 
   const handleSumnit = () => {
-    if (searchParam.placeName) {
-      onSubmit?.(searchParam.placeName);
-    }
+    onSubmit?.(searchParam.placeName ?? '');
   };
 
   return (
@@ -40,6 +38,7 @@ export const PlaceBarSearchField = (props: Props) => {
         width="full"
         rightSide={IconSearch}
         value={searchParam.placeName}
+        onKeyPress={(e) => e.key === 'Enter' && handleSumnit()}
         onChange={({ value }) => handleTextChange(value)}
       />
       <button

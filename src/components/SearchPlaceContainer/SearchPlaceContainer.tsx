@@ -50,10 +50,15 @@ export const SearchPlaceContainer = () => {
   };
 
   const search = (value: string) => {
-    getPlaces(value).then((res) => {
-      console.log(res);
-      setPlaces(res.data as Place[]);
-    });
+    setLoad(true);
+    getPlaces(value)
+      .then((res) => {
+        setPlaces(res.data as Place[]);
+        setLoad(false);
+      })
+      .catch(() => {
+        setLoad(false);
+      });
   };
 
   return (
