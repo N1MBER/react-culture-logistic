@@ -12,7 +12,17 @@ export const GoogleMapInfoBox = (props: Props) => {
   const { position, children, anchor } = props;
 
   return (
-    <InfoBox position={position} anchor={anchor}>
+    <InfoBox
+      position={
+        position
+          ? {
+              lat: position.coordinate_lat,
+              lng: position.coordinate_lon,
+            }
+          : undefined
+      }
+      anchor={anchor}
+    >
       {children}
     </InfoBox>
   );

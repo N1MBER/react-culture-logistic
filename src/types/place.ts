@@ -1,16 +1,17 @@
 import { Time } from './date';
 import { Location } from './google';
 
-type Galery = string[];
+type Image = { image: string };
+type Galery = Image[];
 
 export type WorkTime = {
-  mon?: [Time, Time];
-  tue?: [Time, Time];
-  wed?: [Time, Time];
-  thu?: [Time, Time];
-  fri?: [Time, Time];
-  sat?: [Time, Time];
-  sun?: [Time, Time];
+  mon?: Time;
+  tue?: Time;
+  wed?: Time;
+  thu?: Time;
+  fri?: Time;
+  sat?: Time;
+  sun?: Time;
 };
 
 export const transformWorkTimeToRus = (work: WorkTime) => {
@@ -29,19 +30,18 @@ export type Place = {
   name: string;
   description?: string;
   address?: string;
-  image?: string;
-  workTime?: WorkTime;
-  coordinate: Location;
+  image: Image;
+  work_time?: WorkTime;
   galery?: Galery;
   events?: PlaceEvent[];
-};
+} & Location;
 
 export type PlaceEvent = {
   name: string;
-  startTime?: Date;
-  endTime?: Date;
+  start_time?: string;
+  end_time?: string;
   galery?: Galery;
   description?: string;
-  image?: string;
+  image?: Image;
   price?: number;
 };

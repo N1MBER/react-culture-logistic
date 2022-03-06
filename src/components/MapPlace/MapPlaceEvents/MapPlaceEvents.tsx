@@ -11,6 +11,7 @@ import { cn } from '../../../__private__/utils/bem';
 
 import './MapPlaceEvents.scss';
 import { MapPlaceCardWorkTime } from '../MapPlaceCard/MapPlaceCardWorkTime/MapPlaceCardWorkTime';
+import { checkOpen } from '../MapPlaceCard/MapPlaceCard';
 
 type Props = {
   event: PlaceEvent;
@@ -23,14 +24,14 @@ export const MapPlaceEvents = (props: Props) => {
   const { event, place: eventPlace } = props;
 
   const [workTime, setWorkTime] = useState<
-    undefined | Record<string, [Time, Time] | undefined>
+    undefined | Record<string, Time | undefined>
   >();
 
-  const { name, startTime, endTime, galery, description, image } = event;
+  const { name, start_time, end_time, galery, description, image } = event;
 
   const place = eventPlace || ({} as Place);
 
-  const { name: placeName, workTime: workTimeEn, address } = place;
+  const { name: placeName, work_time: workTimeEn, address } = place;
 
   useEffect(() => {
     workTimeEn && setWorkTime(transformWorkTimeToRus(workTimeEn));
@@ -47,7 +48,7 @@ export const MapPlaceEvents = (props: Props) => {
           {image ? (
             <img
               className={cnMapPlaceEvents('TitleImage')}
-              src={image}
+              src={image.image}
               alt={name}
             />
           ) : (
@@ -66,9 +67,11 @@ export const MapPlaceEvents = (props: Props) => {
           Время проведения:
         </Text>
         <Text as="p" view="secondary" weight="regular" size="m">
-          {`${startTime && `C ${convertDateToString(startTime)}`} ${
-            startTime && endTime && '-'
-          } ${endTime && `По ${convertDateToString(endTime)}`}`}
+          {`${
+            start_time && `C ${convertDateToString(new Date(start_time), true)}`
+          } ${start_time && end_time && '-'} ${
+            end_time && `По ${convertDateToString(new Date(end_time), true)}`
+          }`}
         </Text>
       </div>
       {Array.isArray(galery) && (
@@ -85,8 +88,8 @@ export const MapPlaceEvents = (props: Props) => {
                 >
                   <img
                     className={cnMapPlaceEvents('GalleryImage')}
-                    alt={galeryImage}
-                    src={galeryImage}
+                    alt={galeryImage.image}
+                    src={galeryImage.image}
                   />
                 </div>
               );
@@ -104,7 +107,12 @@ export const MapPlaceEvents = (props: Props) => {
           {address}
         </Text>
       )}
-      {workTime && <MapPlaceCardWorkTime workTime={workTime} />}
+      {workTime && (
+        <MapPlaceCardWorkTime
+          isOpen={checkOpen(workTimeEn)}
+          work_time={workTime}
+        />
+      )}
     </div>
   );
 };

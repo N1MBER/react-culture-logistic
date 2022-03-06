@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Loader } from '@consta/uikit/Loader';
 import { RootState } from '../../store/reducers';
 import { Place } from '../../types/place';
 import { cn } from '../../__private__/utils/bem';
@@ -11,7 +13,6 @@ import {
   PlaceBarSearchField,
   SearchParam,
 } from './PlaceBarSearchField/PlaceBarSearchField';
-import { pins } from '../../__mocks__/google.mock';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions/useWindowDimensions';
 import { setCurrentPlace } from '../../store/reducers/placeReducer';
 
@@ -21,13 +22,16 @@ type ViewMode = 'search' | 'currentPlace';
 
 type Props = {
   open: boolean;
+  places: Place[];
+  load?: boolean;
   onChangePlaces?: (places: Place[]) => void;
+  onSearch?: (value: string) => void;
 };
 
 const cnPlaceBar = cn('PlaceBar');
 
 export const PlaceBar = (props: Props) => {
-  const { onChangePlaces, open } = props;
+  const { onChangePlaces, open, load, places: placesProp, onSearch } = props;
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -44,15 +48,22 @@ export const PlaceBar = (props: Props) => {
 
   const dispatch = useDispatch();
 
+  const history = useHistory();
+  const location = useLocation();
+
   useEffect(() => {
     if (typeof currentPlace !== 'undefined') {
       setPlaces(currentPlace);
       setViewMode('currentPlace');
     } else {
-      setPlaces([...pins]);
       setViewMode('search');
+      setPlaces(placesProp);
     }
   }, [currentPlace]);
+
+  useEffect(() => {
+    setPlaces(placesProp);
+  }, [placesProp.length]);
 
   useEffect(() => {
     if (open) {
@@ -70,15 +81,17 @@ export const PlaceBar = (props: Props) => {
   };
 
   useEffect(() => {
-    setPlaces([...pins]);
-  }, []);
-
-  useEffect(() => {
     onChangePlaces?.(Array.isArray(places) ? places : [places]);
   }, [places]);
 
   const handleCloseCard = () => {
     setViewMode('search');
+    if (
+      location.search.includes('place') ||
+      location.search.includes('events')
+    ) {
+      history.goBack();
+    }
     dispatch(setCurrentPlace(undefined));
   };
 
@@ -113,10 +126,13 @@ export const PlaceBar = (props: Props) => {
           {viewMode === 'search' && (
             <PlaceBarSearchField
               searchParam={searchParam}
+              onSubmit={onSearch}
               onChange={setSearchParam}
             />
           )}
-          {Array.isArray(places) ? (
+          {load ? (
+            <Loader className={cnPlaceBar('Loader')} size="m" />
+          ) : Array.isArray(places) ? (
             places.map((place, index) => (
               <MapPlaceCard
                 place={place}

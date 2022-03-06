@@ -12,8 +12,8 @@ import { useWindowDimensions } from '../../hooks/useWindowDimensions/useWindowDi
 import { RootState } from '../../store/reducers';
 
 const defaultCenter: Location = {
-  lat: 59.9638699,
-  lng: 30.2873573,
+  coordinate_lat: 59.9638699,
+  coordinate_lon: 30.2873573,
 };
 
 const cnGoogleMap = cn('GoogleMap');
@@ -49,7 +49,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
   useEffect(() => {
     if (currentPlace && viewMode === 'sidebar') {
       setCurrentCenter({
-        ...currentPlace.coordinate,
+        coordinate_lat: currentPlace.coordinate_lat,
+        coordinate_lon: currentPlace.coordinate_lon,
       });
       setCurrentZoom(17);
     }
@@ -86,7 +87,10 @@ export const GoogleMap = (props: GoogleMapProps) => {
             viewMode === 'sidebar' ? (width || window.innerWidth) / 2 : width,
           height: (height || window.innerHeight) - 60,
         }}
-        center={currentCenter}
+        center={{
+          lat: currentCenter.coordinate_lat,
+          lng: currentCenter.coordinate_lon,
+        }}
         zoom={currentZoom}
         onLoad={onLoad}
         onUnmount={onUnmount}

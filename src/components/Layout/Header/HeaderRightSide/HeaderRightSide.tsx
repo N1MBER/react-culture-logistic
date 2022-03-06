@@ -11,10 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ThemeName } from '../../../../types/setings';
 import { ThemeContext } from '../../../App';
 import { RootState } from '../../../../store/reducers';
-import {
-  setIsAuthorized,
-  setShowAuth,
-} from '../../../../store/reducers/authReducer';
+import { logout, setShowAuth } from '../../../../store/reducers/authReducer';
 
 type PersonStatus = 'available' | 'remote' | 'out';
 
@@ -70,7 +67,7 @@ const getDataOfTheme = (theme: ThemeName): ThemeData => {
 export const themes: ThemeName[] = ['Default', 'Dark', 'System'];
 
 export const HeaderRightSide = (props: HeaderRightSideProps) => {
-  const { isLogged, name, info, status, avatar, isMinified } = props;
+  const { isLogged, name, status, avatar, isMinified } = props;
 
   const { theme, setTheme } = useContext(ThemeContext);
 
@@ -95,7 +92,7 @@ export const HeaderRightSide = (props: HeaderRightSideProps) => {
   const onContextMenuClick = (item: Item) => {
     setShowContextMenu(false);
     if (item.operationType === 'exit') {
-      dispatch(setIsAuthorized(false));
+      dispatch(logout());
     }
   };
 
@@ -116,9 +113,8 @@ export const HeaderRightSide = (props: HeaderRightSideProps) => {
           ref={loginRef}
           isLogged={isLogged}
           personName={name || 'Михаил Зерно'}
-          personInfo={info || 'В другом офисе'}
           personStatus={status || 'available'}
-          personAvatarUrl={avatar || 'ссылка на аватарку'}
+          personAvatarUrl={avatar || undefined}
           isMinified={isMinified}
           onClick={handleClick}
         />

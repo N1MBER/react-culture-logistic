@@ -44,7 +44,10 @@ export const rootReducer = combineReducers({
     refreshReducer
   ),
   settings: settingsReducer,
-  auth: authReducer,
+  auth: persistReducer(
+    getPersistConfig({ key: 'auth', whitelist: ['user', 'isAuthorized'] }),
+    authReducer
+  ),
   place: placeReducer,
 });
 

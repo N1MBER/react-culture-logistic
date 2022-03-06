@@ -11,15 +11,13 @@ import './Header.scss';
 const cnHeader = cn('Header');
 
 export const Header = () => {
-  const isAuthorized = useSelector(
-    (store: RootState) => store.auth.isAuthorized
-  );
+  const { user, isAuthorized } = useSelector((store: RootState) => store.auth);
 
   return (
     <ConstaHeader
       className={cnHeader()}
       leftSide={<HeaderLeftSide />}
-      rightSide={<HeaderRightSide isLogged={isAuthorized} />}
+      rightSide={<HeaderRightSide isLogged={isAuthorized} name={user?.email} />}
     />
   );
 };

@@ -14,12 +14,19 @@ export const GoogleMapMarker = (props: Props) => {
     const { latLng } = e;
     latLng &&
       onMarkerClick?.({
-        lat: latLng.lat(),
-        lng: latLng.lng(),
+        coordinate_lat: latLng.lat(),
+        coordinate_lon: latLng.lng(),
       });
   };
 
   return (
-    <Marker icon="/images/Pin.svg" position={position} onClick={handleClick} />
+    <Marker
+      icon="/images/Pin.svg"
+      position={{
+        lat: position?.coordinate_lat,
+        lng: position?.coordinate_lon,
+      }}
+      onClick={handleClick}
+    />
   );
 };

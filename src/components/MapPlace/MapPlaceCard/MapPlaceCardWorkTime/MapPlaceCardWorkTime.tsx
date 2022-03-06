@@ -8,21 +8,23 @@ import './MapPlaceCardWorkTime.scss';
 const cnMapPlaceCardWorkTime = cn('MapPlaceCardWorkTime');
 
 export const MapPlaceCardWorkTime = (props: {
-  workTime: Record<string, [Time, Time] | undefined>;
+  work_time: Record<string, Time | undefined>;
+  isOpen: boolean;
 }) => {
-  const { workTime } = props;
+  const { work_time, isOpen } = props;
   return (
     <div className={cnMapPlaceCardWorkTime()}>
       <Text weight="semibold" size="s" align="left" as="p" view="primary">
-        Время работы:
+        Время работы:{' '}
+        {!isOpen && (
+          <Text weight="semibold" size="m" align="left" as="span" view="alert">
+            Закрыто
+          </Text>
+        )}
       </Text>
-      {Object.keys(workTime).map((key) => {
-        let startTime;
-        let endTime;
-        const time = workTime[key];
-        if (time) {
-          [startTime, endTime] = time;
-        }
+      {Object.keys(work_time).map((key) => {
+        const time = work_time[key];
+        const { start_time, end_time } = time ?? ({} as Time);
         return (
           <div
             className={cnMapPlaceCardWorkTime('Container')}
@@ -31,14 +33,11 @@ export const MapPlaceCardWorkTime = (props: {
             <p className={cnMapPlaceCardWorkTime('Day')}>{key}</p>
             <p
               className={cnMapPlaceCardWorkTime('Time', {
-                alert: !(startTime && endTime),
+                alert: !(start_time && end_time),
               })}
             >
-              {startTime && endTime
-                ? `${convertTime(
-                    startTime.hours,
-                    startTime.minutes
-                  )} - ${convertTime(endTime.hours, endTime.minutes)}`
+              {start_time && end_time
+                ? `${convertTime(start_time)} - ${convertTime(end_time)}`
                 : 'Закрыто'}
             </p>
           </div>

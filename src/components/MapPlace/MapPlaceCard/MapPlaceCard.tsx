@@ -4,10 +4,12 @@ import { Text } from '@consta/uikit/Text';
 import { IconClose } from '@consta/uikit/IconClose';
 import { useDispatch } from 'react-redux';
 import { IconCalendar } from '@consta/uikit/IconCalendar';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Place,
   PlaceEvent,
   transformWorkTimeToRus,
+  WorkTime,
 } from '../../../types/place';
 import { Time } from '../../../types/date';
 import { cn } from '../../../__private__/utils/bem';
@@ -25,19 +27,70 @@ export type MapPlaceCardProps = {
 
 const cnMapPlaceCard = cn('MapPlaceCard');
 
+const weekDayMap: Record<number, keyof WorkTime> = {
+  1: 'mon',
+  2: 'tue',
+  3: 'wed',
+  4: 'thu',
+  5: 'fri',
+  6: 'sat',
+  7: 'sun',
+};
+
+const getDates = (workTime: WorkTime) => {
+  const dates: (Date[] | null)[] = [];
+  for (let i = 1; i < 8; i++) {
+    const time = workTime[weekDayMap[i]];
+    if (time) {
+      const date_start = new Date();
+      const date_end = new Date();
+      const { start_time, end_time } = time;
+      date_start.setHours(Number(start_time.split(':')[0]));
+      date_start.setMinutes(Number(start_time.split(':')[1]));
+      date_start.setSeconds(0);
+      date_end.setHours(Number(end_time.split(':')[0]));
+      date_end.setMinutes(Number(end_time.split(':')[1]));
+      date_end.setSeconds(0);
+      dates.push([date_start, date_end]);
+    } else {
+      dates.push(null);
+    }
+  }
+  return dates;
+};
+
+export const checkOpen = (time: WorkTime | undefined) => {
+  if (time) {
+    const currentDate = new Date();
+    const dates = getDates(time);
+    if (dates[currentDate.getDate()]) {
+      //@ts-ignore
+      const start_time = dates[currentDate.getDate()][0];
+      //@ts-ignore
+      const end_time = dates[currentDate.getDate()][1];
+      return currentDate > start_time && currentDate < end_time;
+    }
+    return false;
+  }
+  return false;
+};
+
 export const MapPlaceCard = (props: MapPlaceCardProps) => {
   const [workTime, setWorkTime] = useState<
-    undefined | Record<string, [Time, Time] | undefined>
+    undefined | Record<string, Time | undefined>
   >();
 
   const { place, closeCard, view = 'infobox', onCardClick } = props;
 
   const dispatch = useDispatch();
 
+  const history = useHistory();
+  const location = useLocation();
+
   const {
     name,
     image,
-    workTime: workTimeEn,
+    work_time: workTimeEn,
     description,
     galery,
     address,
@@ -50,6 +103,14 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
 
   const onClickOnPlaceEvent = (placeEvent: PlaceEvent) => {
     dispatch(setPlaceEvent({ event: placeEvent, place }));
+    history.push(`${location.search}&event=${placeEvent.name}`);
+  };
+
+  const handleCardClick = () => {
+    if (view === 'card_short') {
+      history.push(`?place=${place.name}`);
+      onCardClick?.(place);
+    }
   };
 
   const Container = view === 'card_short' ? 'button' : 'div';
@@ -57,7 +118,7 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
   return (
     <Container
       className={cnMapPlaceCard({ view })}
-      onClick={() => onCardClick?.(place)}
+      onClick={handleCardClick}
       style={{
         ['--infobox-max-height' as string]: window.innerHeight * 0.65,
       }}
@@ -75,10 +136,10 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
         <div
           className={cnMapPlaceCard('TitleContainer', { hasImage: !!image })}
         >
-          {image ? (
+          {image.image ? (
             <img
               className={cnMapPlaceCard('TitleImage')}
-              src={image}
+              src={image.image}
               alt={name}
             />
           ) : (
@@ -139,15 +200,20 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
               >
                 <img
                   className={cnMapPlaceCard('GalleryImage')}
-                  src={galeryImage}
-                  alt={galeryImage}
+                  src={galeryImage.image}
+                  alt={galeryImage.image}
                 />
               </div>
             ))}
           </div>
         </>
       )}
-      {workTime && <MapPlaceCardWorkTime workTime={workTime} />}
+      {workTime && (
+        <MapPlaceCardWorkTime
+          isOpen={checkOpen(workTimeEn)}
+          work_time={workTime}
+        />
+      )}
       {Array.isArray(events) && (
         <>
           <Text
@@ -170,7 +236,7 @@ export const MapPlaceCard = (props: MapPlaceCardProps) => {
               >
                 <div className={cnMapPlaceCard('EventImage')}>
                   {placeEvent.image ? (
-                    <img alt={placeEvent.name} src={placeEvent.image} />
+                    <img alt={placeEvent.name} src={placeEvent.image.image} />
                   ) : (
                     <IconCalendar size="s" />
                   )}

@@ -1,7 +1,18 @@
 .PlaceBarSearchField {
     width: 100%;
+    position: relative;
 
     & > div:first-child {
         width: 100%;
+    }
+
+    &-Button {
+        position: absolute;
+        right: calc(var(--space-s) - var(--space-2xs));
+        top: calc(var(--space-4xl) - 5px);
+        width: var(--space-l);
+        height: var(--space-l);
+        opacity: 0;
+        cursor: pointer;
     }
 }

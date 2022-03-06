@@ -13,15 +13,22 @@ type Props = {
   searchParam: SearchParam;
   className?: string;
   onChange?: (value: SearchParam) => void;
+  onSubmit?: (value: string) => void;
 };
 
 const cnPlaceBarSearchField = cn('PlaceBarSearchField');
 
 export const PlaceBarSearchField = (props: Props) => {
-  const { searchParam, onChange, className } = props;
+  const { searchParam, onChange, className, onSubmit } = props;
 
   const handleTextChange = (value: string | null) => {
     onChange?.({ ...searchParam, placeName: value });
+  };
+
+  const handleSumnit = () => {
+    if (searchParam.placeName) {
+      onSubmit?.(searchParam.placeName);
+    }
   };
 
   return (
@@ -34,6 +41,11 @@ export const PlaceBarSearchField = (props: Props) => {
         rightSide={IconSearch}
         value={searchParam.placeName}
         onChange={({ value }) => handleTextChange(value)}
+      />
+      <button
+        type="button"
+        onClick={handleSumnit}
+        className={cnPlaceBarSearchField('Button')}
       />
     </div>
   );
